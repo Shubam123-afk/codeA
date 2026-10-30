@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NovaStore — Discover Your Next Favorite</title>
+<meta name="description" content="NovaStore: premium audio, wearables, bags and home essentials.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* NovaStore — black, white and a quiet blue. Tokens first, then components. */
+:root{--bg:#fff;--bg2:#f4f6fa;--text:#0a0c10;--muted:#5b6472;--line:#e3e7ee;--blue:#2f6bff;--blue-soft:#e8efff;--card:#fff;--ink:#0a0c10;--on-ink:#fff;--r:18px;--shadow:0 12px 32px rgba(10,12,16,.08)}
+[data-theme=dark]{--bg:#0a0c10;--bg2:#12151c;--text:#f2f4f8;--muted:#9aa3b2;--line:#222732;--blue:#6b95ff;--blue-soft:#17233f;--card:#12151c;--ink:#f2f4f8;--on-ink:#0a0c10;--shadow:0 12px 32px rgba(0,0,0,.5)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.wrap{width:min(1180px,92%);margin-inline:auto}
+.sec{padding:72px 0 0}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.04;letter-spacing:-.035em}
+h2{font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.02em;margin-bottom:24px}
+.lead{color:var(--muted);max-width:52ch}
+.muted{color:var(--muted);font-size:.9rem}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.link{color:var(--blue);font-weight:600}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.logo-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--ink);color:var(--on-ink);font-size:.9rem}
+.menu{display:flex;gap:28px}
+.menu a{font-size:.92rem;color:var(--muted);transition:color .2s}
+.menu a:hover,.menu a.active{color:var(--text)}
+.actions{display:flex;gap:6px}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:50%;border:0;background:transparent;font-size:1.1rem;transition:background .2s}
+.icon-btn:hover{background:var(--bg2)}
+.badge{position:absolute;top:2px;right:0;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--blue);color:#fff;font-size:.68rem;line-height:18px;font-weight:600}
+.burger{display:none}
+
+/* Buttons */
+.btn{display:inline-block;padding:13px 26px;border-radius:999px;border:1.5px solid transparent;font-weight:600;font-size:.92rem;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn.primary{background:var(--ink);color:var(--on-ink)}
+.btn.ghost{border-color:var(--line);background:transparent}
+.btn.light{background:#fff;color:#0a0c10}
+.btn.block{width:100%;text-align:center}
+
+/* Hero — the one memorable moment: the product floats on a soft blue field */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:56px 0 8px}
+.pill{display:inline-block;padding:6px 14px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.82rem;font-weight:600;margin-bottom:20px}
+.hero .lead{margin:20px 0 28px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:28px;list-style:none;padding:0;margin-top:36px;color:var(--muted);font-size:.85rem;flex-wrap:wrap}
+.stats b{display:block;color:var(--text);font-size:1.15rem}
+.hero-art{aspect-ratio:1;border-radius:40px;background:radial-gradient(circle at 30% 20%,var(--blue-soft),var(--bg2));overflow:hidden;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero-art img{width:100%;height:100%;object-fit:cover;animation:float 6s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+@keyframes float{50%{transform:translateY(-10px) scale(1.02)}}
+
+/* Categories */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cat{padding:28px 20px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--line);text-align:left;transition:border-color .2s,transform .2s}
+.cat:hover{border-color:var(--blue);transform:translateY(-3px)}
+.cat b{display:block;font-size:1.05rem}
+.cat span{color:var(--muted);font-size:.85rem}
+
+/* Product cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .25s,border-color .25s}
+.card:hover{box-shadow:var(--shadow);border-color:transparent}
+.card-img{position:relative;aspect-ratio:1;background:var(--bg2);border:0;padding:0;display:block;width:100%;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .card-img img{transform:scale(1.05)}
+.off{position:absolute;top:12px;left:12px;background:var(--ink);color:var(--on-ink);font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:999px}
+.heart{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:0;background:var(--bg);font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .2s}
+.heart:hover{transform:scale(1.12)}
+.heart.on{color:#e5484d}
+.card-body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card-body h3{font-size:1rem;font-weight:600}
+.cat-label{font-size:.78rem;color:var(--muted)}
+.stars{color:#f5a623;font-size:.85rem;letter-spacing:1px}
+.stars small{color:var(--muted);letter-spacing:0;margin-left:6px}
+.price{display:flex;gap:8px;align-items:baseline;margin-top:auto;padding-top:6px}
+.price b{font-size:1.15rem}
+.price s{color:var(--muted);font-size:.88rem}
+.add{margin-top:10px;padding:11px;border-radius:12px;border:0;background:var(--ink);color:var(--on-ink);font-weight:600;transition:background .2s}
+.add:hover{background:var(--blue);color:#fff}
+
+/* Promo */
+.promo{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-top:72px}
+.promo-card{padding:40px;border-radius:28px;color:#fff;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.promo-card.dark{background:#0a0c10;border:1px solid var(--line)}
+.promo-card.blue{background:linear-gradient(135deg,#2f6bff,#1a3fa8)}
+.promo-card h3{font-size:1.6rem;letter-spacing:-.02em}
+.promo-card p{opacity:.8;margin-bottom:10px}
+
+/* Toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;align-items:center}
+.toolbar input,.toolbar select,form input,form textarea{padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);width:100%}
+.toolbar input{flex:1 1 220px;width:auto}
+.toolbar select{width:auto}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:.88rem;transition:all .2s}
+.chip.on{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--muted)}
+
+/* About / testimonials / contact */
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;padding:48px;border-radius:32px;background:var(--bg2)}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center}
+.about-stats b{display:block;font-size:2rem;color:var(--blue)}
+.about-stats span{font-size:.82rem;color:var(--muted)}
+.testi{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi figure{padding:28px;border:1px solid var(--line);border-radius:var(--r)}
+.testi blockquote{margin-bottom:16px}
+.testi figcaption{color:var(--muted);font-size:.88rem}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.note{margin-top:20px;padding:16px;border-radius:12px;background:var(--blue-soft);font-size:.88rem}
+form{display:grid;gap:16px}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:500}
+form input.bad,form textarea.bad{border-color:#e5484d}
+.err{color:#e5484d;font-weight:400;min-height:1em}
+#formStatus{font-weight:600}
+#formStatus.ok{color:#18a058}
+
+/* Footer */
+.footer{margin-top:96px;border-top:1px solid var(--line);padding:40px 0 24px}
+.foot-in{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.soc{display:flex;gap:20px}
+.soc a{color:var(--muted)}.soc a:hover{color:var(--blue)}
+.copy{margin-top:28px;color:var(--muted);font-size:.82rem}
+
+/* Search bar */
+.search-bar{position:fixed;inset:0 0 auto;z-index:70;background:var(--bg);padding:14px 4%;display:flex;gap:8px;border-bottom:1px solid var(--line)}
+.search-bar[hidden]{display:none}
+.search-bar input{flex:1;padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:var(--bg2)}
+
+/* Drawers, modal, toasts */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:80}
+.overlay.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--bg);z-index:90;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.drawer.open{transform:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--line)}
+.drawer-body{flex:1;overflow:auto;padding:12px 20px}
+.drawer-foot{padding:20px;border-top:1px solid var(--line);display:grid;gap:8px}
+.row{display:grid;grid-template-columns:64px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.row img{width:64px;height:64px;border-radius:12px;object-fit:cover}
+.row h4{font-size:.92rem}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;margin-top:6px}
+.qty button{width:30px;height:30px;border:0;background:none;font-size:1rem}
+.qty span{min-width:24px;text-align:center;font-size:.88rem}
+.rm{border:0;background:none;color:var(--muted);font-size:.8rem;text-decoration:underline}
+.line{display:flex;justify-content:space-between;font-size:.92rem}
+.line.total{font-weight:700;font-size:1.1rem}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:16px;overflow:auto}
+.modal[hidden]{display:none}
+.modal-box{position:relative;background:var(--bg);border-radius:28px;width:min(960px,100%);padding:28px;max-height:94vh;overflow:auto;animation:rise .35s both}
+.modal-x{position:absolute;top:14px;right:14px;z-index:2;background:var(--bg2)}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.detail-img{border-radius:20px;overflow:hidden;background:var(--bg2);aspect-ratio:1}
+.detail-img img{width:100%;height:100%;object-fit:cover}
+.detail-info{display:grid;gap:14px;align-content:start}
+.swatches{display:flex;gap:10px}
+.sw{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);outline-offset:2px}
+.sw.on{border-color:var(--text)}
+.detail-act{display:flex;gap:12px;align-items:center}
+.detail-act .qty{margin:0}
+.related{margin-top:32px}
+.related h3{margin-bottom:14px}
+.related .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.mini{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:none;text-align:left;padding:0}
+.mini img{aspect-ratio:1;object-fit:cover;width:100%}
+.mini div{padding:10px;font-size:.82rem}
+.toasts{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:120;display:grid;gap:8px;justify-items:center}
+.toast{background:var(--ink);color:var(--on-ink);padding:12px 22px;border-radius:999px;font-size:.88rem;box-shadow:var(--shadow);animation:rise .3s both}
+.top{position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:1.2rem;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:40}
+.top.show{opacity:1;pointer-events:auto}
+.top:hover{transform:translateY(-3px)}
+
+/* Scroll reveal: applied only by JS, so content never hides without it */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero,.about,.contact,.promo,.detail{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .testi{grid-template-columns:1fr}
+  .burger{display:inline-block}
+  .menu{position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 4%;transform:translateY(-120%);transition:transform .3s;z-index:-1}
+  .menu.open{transform:none}
+  .menu a{padding:14px 0;border-bottom:1px solid var(--line)}
+  .about{padding:28px}
+}
+@media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}.card-body{padding:12px}.promo-card{padding:28px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#home" class="logo" aria-label="NovaStore home"><span class="logo-mark">N</span>NovaStore</a>
+    <nav id="menu" class="menu" aria-label="Main">
+      <a href="#home">Home</a><a href="#shop">Shop</a><a href="#categories">Categories</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search products">⌕</button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">◐</button>
+      <button class="icon-btn" id="wishBtn" aria-label="Open wishlist">♡<span class="badge" id="wishCount">0</span></button>
+      <button class="icon-btn" id="cartBtn" aria-label="Open cart">🛍<span class="badge" id="cartCount">0</span></button>
+      <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="home">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="pill">New season, new arrivals</p>
+      <h1>Discover Your Next Favorite.</h1>
+      <p class="lead">NovaStore brings together carefully chosen audio gear, wearables, bags and home pieces. Well made, fairly priced, delivered fast.</p>
+      <div class="btns"><a class="btn primary" href="#shop">Shop Now</a><a class="btn ghost" href="#categories">Explore Collection</a></div>
+      <ul class="stats"><li><b>12k+</b> happy customers</li><li><b>30-day</b> free returns</li><li><b>4.8★</b> average rating</li></ul>
+    </div>
+    <div class="hero-art"><img id="heroImg" alt="Nova Pro wireless headphones in midnight blue"></div>
+  </section>
+
+  <section class="wrap sec" id="categories">
+    <h2>Shop by category</h2>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <section class="wrap sec">
+    <div class="sec-head"><h2>Featured products</h2><a href="#shop" class="link">View all</a></div>
+    <div class="grid" id="featuredGrid"></div>
+  </section>
+
+  <section class="wrap promo">
+    <div class="promo-card dark"><h3>Up to 40% off audio</h3><p>Headphones, speakers and earbuds, this week only.</p><button class="btn light" data-cat="Audio">Shop audio</button></div>
+    <div class="promo-card blue"><h3>Free shipping over $100</h3><p>Use code <b>NOVA10</b> for an extra 10% off your first order.</p><button class="btn light" id="copyCode">Copy code</button></div>
+  </section>
+
+  <section class="wrap sec">
+    <div class="sec-head"><h2>Trending now</h2></div>
+    <div class="grid" id="trendingGrid"></div>
+  </section>
+
+  <section class="wrap sec" id="shop">
+    <div class="sec-head"><h2>All products</h2><span id="resultCount" class="muted"></span></div>
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search products by name" aria-label="Search products by name">
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+      <select id="sort" aria-label="Sort products">
+        <option value="featured">Sort: Popularity</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+        <option value="rating">Top rated</option>
+      </select>
+    </div>
+    <div class="grid" id="productGrid" aria-live="polite"></div>
+  </section>
+
+  <section class="wrap sec" id="about">
+    <div class="about">
+      <div><h2>Built around fewer, better things</h2>
+      <p class="lead">We test every product for a month before it reaches the shop. If it doesn't hold up, it doesn't make the cut. Every order ships carbon-neutral, with a 30-day return window.</p></div>
+      <div class="about-stats"><div><b>120</b><span>products tested</span></div><div><b>48h</b><span>average delivery</span></div><div><b>2 yr</b><span>warranty</span></div></div>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <h2>What customers say</h2>
+    <div class="testi">
+      <figure><blockquote>The Nova Pro headphones are the best I've owned. Battery lasts all week.</blockquote><figcaption>Aisha K., Mumbai</figcaption></figure>
+      <figure><blockquote>Fast delivery, beautiful packaging, and the watch looks even better in person.</blockquote><figcaption>Daniel R., Berlin</figcaption></figure>
+      <figure><blockquote>Returns were painless. I'll be back for the weekender bag.</blockquote><figcaption>Priya S., Pune</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap sec" id="contact">
+    <div class="contact">
+      <div><h2>Get in touch</h2><p class="lead">Questions about an order or a product? Send us a message.</p>
+        <p class="note"><b>Demo note:</b> this form is frontend-only. It validates input but doesn't send anything. To receive real messages, connect it to a backend or a service such as Formspree, Web3Forms or EmailJS.</p></div>
+      <form id="contactForm" novalidate>
+        <label>Full name<input name="name" type="text" autocomplete="name"><small class="err"></small></label>
+        <label>Email address<input name="email" type="email" autocomplete="email"><small class="err"></small></label>
+        <label>Subject<input name="subject" type="text"><small class="err"></small></label>
+        <label>Message<textarea name="message" rows="5"></textarea><small class="err"></small></label>
+        <button class="btn primary" type="submit">Send message</button>
+        <p id="formStatus" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-in">
+    <div><a href="#home" class="logo"><span class="logo-mark">N</span>NovaStore</a><p class="muted">Premium essentials for everyday life.</p></div>
+    <div class="soc">
+      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://x.com" target="_blank" rel="noopener">X</a>
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <p class="wrap copy">© <span id="year"></span> NovaStore. Demo project, no real purchases.</p>
+</footer>
+
+<!-- Search overlay -->
+<div class="search-bar" id="searchBar" hidden><input type="search" id="navSearch" placeholder="Search products…" aria-label="Search"><button class="icon-btn" id="searchClose" aria-label="Close search">✕</button></div>
+
+<!-- Drawers -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Shopping cart" aria-hidden="true">
+  <div class="drawer-head"><h3>Your cart</h3><button class="icon-btn" data-close aria-label="Close cart">✕</button></div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</aside>
+<aside class="drawer" id="wishDrawer" aria-label="Wishlist" aria-hidden="true">
+  <div class="drawer-head"><h3>Wishlist</h3><button class="icon-btn" data-close aria-label="Close wishlist">✕</button></div>
+  <div class="drawer-body" id="wishItems"></div>
+</aside>
+
+<!-- Product detail modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <div class="modal-box">
+    <button class="icon-btn modal-x" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<button class="top" id="toTop" aria-label="Back to top">↑</button>
+<script>
+/* NovaStore — vanilla JS. Sections: data, storage, helpers, render, cart, wishlist, modal, UI, form, init */
+'use strict';
+
+/* ---------- Data ---------- */
+const COLORS = { Midnight:'#1b2a4a', Cloud:'#dfe6f3', Onyx:'#15171c', Sky:'#6b95ff', Sand:'#d9cbb3', Sage:'#9bb5a0' };
+const PRODUCTS = [
+  { id:1,  name:'Nova Pro Headphones', cat:'Audio',     price:249, was:329, rating:4.8, pop:980, colors:['Midnight','Cloud','Onyx'], desc:'Active noise cancelling, 40-hour battery and a soft memory-foam fit for all-day listening.' },
+  { id:2,  name:'Pulse Wireless Buds', cat:'Audio',     price:99,  was:139, rating:4.6, pop:870, colors:['Cloud','Onyx'],            desc:'Compact earbuds with clear calls, 8-hour playback and a pocketable charging case.' },
+  { id:3,  name:'Orbit Speaker',       cat:'Audio',     price:129, was:159, rating:4.5, pop:640, colors:['Onyx','Sky'],              desc:'Waterproof 360° speaker with deep bass and a 20-hour battery.' },
+  { id:4,  name:'Halo Smartwatch',     cat:'Wearables', price:199, was:279, rating:4.7, pop:920, colors:['Onyx','Sky','Sand'],       desc:'Sleep, heart rate and workout tracking in a slim aluminium case with a week-long battery.' },
+  { id:5,  name:'Flux Fitness Band',   cat:'Wearables', price:59,  was:79,  rating:4.3, pop:510, colors:['Onyx','Sage'],             desc:'Lightweight band with step tracking, notifications and 14-day battery life.' },
+  { id:6,  name:'Lumen Ring Light',    cat:'Wearables', price:45,  was:60,  rating:4.1, pop:300, colors:['Cloud','Onyx'],            desc:'Clip-on wearable light for night runs and rides, rechargeable over USB-C.' },
+  { id:7,  name:'Weekender Bag',       cat:'Bags',      price:119, was:149, rating:4.7, pop:760, colors:['Sand','Onyx','Sage'],      desc:'Water-resistant canvas carry-all with a padded laptop sleeve and leather handles.' },
+  { id:8,  name:'Metro Backpack',      cat:'Bags',      price:89,  was:119, rating:4.4, pop:690, colors:['Midnight','Onyx'],         desc:'Slim commuter backpack with hidden zip pockets and a trolley strap.' },
+  { id:9,  name:'Daily Sling',         cat:'Bags',      price:49,  was:65,  rating:4.2, pop:420, colors:['Sand','Midnight'],         desc:'Compact crossbody sling for essentials, with a magnetic quick-open flap.' },
+  { id:10, name:'Aura Desk Lamp',      cat:'Home',      price:79,  was:99,  rating:4.6, pop:580, colors:['Cloud','Onyx'],            desc:'Dimmable LED lamp with warm-to-cool light and a wireless charging base.' },
+  { id:11, name:'Haven Smart Bulb Set',cat:'Home',      price:39,  was:55,  rating:4.0, pop:350, colors:['Cloud'],                   desc:'Four app-controlled colour bulbs that work with voice assistants.' },
+  { id:12, name:'Drift Diffuser',      cat:'Home',      price:69,  was:89,  rating:4.5, pop:470, colors:['Sage','Sand'],             desc:'Ultrasonic aroma diffuser with a soft night light and auto shut-off.' }
+];
+const CATS = ['All','Audio','Wearables','Bags','Home'];
+const CAT_NOTE = { Audio:'Headphones, buds, speakers', Wearables:'Watches and trackers', Bags:'Carry and commute', Home:'Light and calm' };
+
+/* ---------- Storage (guarded: localStorage can be blocked) ---------- */
+const store = {
+  get(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* ignore */ } }
+};
+let cart = store.get('nova_cart', []);      // [{id, color, qty}]
+let wish = store.get('nova_wish', []);      // [id]
+const state = { cat:'All', q:'', sort:'featured' };
+
+/* ---------- Helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const money = n => '$' + n.toFixed(2).replace(/\.00$/, '');
+const byId = id => PRODUCTS.find(p => p.id === id);
+const off = p => Math.round((1 - p.price / p.was) * 100);
+const stars = r => '★'.repeat(Math.round(r)) + '☆'.repeat(5 - Math.round(r));
+
+/** Builds a product illustration as an inline SVG data URI (no image files needed). */
+function art(p, colorName) {
+  const c = COLORS[colorName || p.colors[0]];
+  const shapes = {
+    Audio:`<path d="M130 230v-40a110 110 0 0 1 220 0v40" fill="none" stroke="${c}" stroke-width="22" stroke-linecap="round"/><rect x="105" y="215" width="55" height="110" rx="26" fill="${c}"/><rect x="320" y="215" width="55" height="110" rx="26" fill="${c}"/>`,
+    Wearables:`<rect x="195" y="70" width="90" height="340" rx="30" fill="${c}" opacity=".35"/><rect x="160" y="170" width="160" height="160" rx="42" fill="${c}"/><circle cx="240" cy="250" r="48" fill="#fff" opacity=".18"/><path d="M240 250l0-30M240 250l22 12" stroke="#fff" stroke-width="7" stroke-linecap="round"/>`,
+    Bags:`<path d="M185 190v-30a55 55 0 0 1 110 0v30" fill="none" stroke="${c}" stroke-width="16" stroke-linecap="round"/><rect x="110" y="185" width="260" height="190" rx="36" fill="${c}"/><rect x="110" y="250" width="260" height="14" fill="#fff" opacity=".18"/>`,
+    Home:`<path d="M170 120h140l35 90H135z" fill="${c}"/><rect x="232" y="210" width="16" height="130" fill="${c}" opacity=".8"/><ellipse cx="240" cy="355" rx="70" ry="16" fill="${c}"/>`
+  };
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480"><defs><radialGradient id="g" cx=".3" cy=".2" r="1"><stop offset="0" stop-color="#eef3ff"/><stop offset="1" stop-color="#c9d6f2"/></radialGradient></defs><rect width="480" height="480" fill="url(#g)"/><ellipse cx="240" cy="400" rx="130" ry="14" fill="#0a0c10" opacity=".12"/>${shapes[p.cat]}</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+/** Shows a short toast message. */
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  $('#toasts').append(t);
+  setTimeout(() => t.remove(), 2400);
+}
+
+/* ---------- Product cards ---------- */
+function cardHTML(p) {
+  const on = wish.includes(p.id);
+  return `<article class="card reveal" data-id="${p.id}">
+    <div style="position:relative">
+      <button class="card-img" data-view="${p.id}" aria-label="View ${p.name}"><img src="${art(p)}" alt="${p.name}" loading="lazy" width="480" height="480"></button>
+      <span class="off">-${off(p)}%</span>
+      <button class="heart ${on ? 'on' : ''}" data-wish="${p.id}" aria-pressed="${on}" aria-label="${on ? 'Remove from' : 'Add to'} wishlist">${on ? '♥' : '♡'}</button>
+    </div>
+    <div class="card-body">
+      <span class="cat-label">${p.cat}</span>
+      <h3>${p.name}</h3>
+      <div class="stars" aria-label="Rated ${p.rating} out of 5">${stars(p.rating)}<small>${p.rating}</small></div>
+      <div class="price"><b>${money(p.price)}</b><s>${money(p.was)}</s></div>
+      <button class="add" data-add="${p.id}">Add to Cart</button>
+    </div></article>`;
+}
+
+/** Applies category, search and sort state, then renders the main grid. */
+function renderShop() {
+  const q = state.q.trim().toLowerCase();
+  let list = PRODUCTS.filter(p => (state.cat === 'All' || p.cat === state.cat) && p.name.toLowerCase().includes(q));
+  const sorts = { low:(a,b)=>a.price-b.price, high:(a,b)=>b.price-a.price, rating:(a,b)=>b.rating-a.rating, featured:(a,b)=>b.pop-a.pop };
+  list.sort(sorts[state.sort]);
+  $('#productGrid').innerHTML = list.length ? list.map(cardHTML).join('') : '<p class="empty">No products match your search. Try a different name or category.</p>';
+  $('#resultCount').textContent = `${list.length} product${list.length === 1 ? '' : 's'}`;
+  $$('.chip').forEach(c => { const on = c.dataset.cat === state.cat; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on); });
+  observe();
+}
+function renderAll() {
+  renderShop();
+  $('#featuredGrid').innerHTML = PRODUCTS.filter(p => [1,4,7,10].includes(p.id)).map(cardHTML).join('');
+  $('#trendingGrid').innerHTML = [...PRODUCTS].sort((a,b)=>b.pop-a.pop).slice(0,4).map(cardHTML).join('');
+  observe();
+}
+
+/* ---------- Cart ---------- */
+const cartKey = i => i.id + '|' + i.color;
+function addToCart(id, color, qty = 1) {
+  const p = byId(id); color = color || p.colors[0];
+  const found = cart.find(i => i.id === id && i.color === color);
+  found ? found.qty += qty : cart.push({ id, color, qty });
+  saveCart(); toast(`${p.name} added to cart`);
+}
+function changeQty(key, d) {
+  const i = cart.find(x => cartKey(x) === key); if (!i) return;
+  i.qty += d; if (i.qty < 1) cart = cart.filter(x => x !== i);
+  saveCart();
+}
+function removeItem(key) { cart = cart.filter(x => cartKey(x) !== key); saveCart(); }
+function saveCart() { store.set('nova_cart', cart); renderCart(); }
+
+/** Re-draws the cart drawer, totals and badge. */
+function renderCart() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const sub = cart.reduce((s, i) => s + byId(i.id).price * i.qty, 0);
+  const ship = sub === 0 || sub >= 100 ? 0 : 8;
+  $('#cartCount').textContent = count;
+  $('#cartItems').innerHTML = cart.length ? cart.map(i => {
+    const p = byId(i.id), k = cartKey(i);
+    return `<div class="row"><img src="${art(p, i.color)}" alt="" width="64" height="64">
+      <div><h4>${p.name}</h4><span class="muted">${i.color} · ${money(p.price)}</span>
+        <div class="qty"><button data-dec="${k}" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button data-inc="${k}" aria-label="Increase quantity">+</button></div></div>
+      <div style="text-align:right"><b>${money(p.price * i.qty)}</b><br><button class="rm" data-rm="${k}">Remove</button></div></div>`;
+  }).join('') : '<p class="empty">Your cart is empty. Add something you like and it will show up here.</p>';
+  $('#cartFoot').innerHTML = cart.length ? `
+    <div class="line"><span>Subtotal</span><span>${money(sub)}</span></div>
+    <div class="line"><span>Shipping</span><span>${ship ? money(ship) : 'Free'}</span></div>
+    <div class="line total"><span>Total</span><span>${money(sub + ship)}</span></div>
+    <button class="btn primary block" id="checkout">Checkout</button>
+    <button class="rm" id="clearCart">Clear cart</button>` : '';
+}
+
+/* ---------- Wishlist ---------- */
+function toggleWish(id) {
+  const had = wish.includes(id);
+  wish = had ? wish.filter(x => x !== id) : [...wish, id];
+  store.set('nova_wish', wish);
+  toast(had ? 'Removed from wishlist' : 'Saved to wishlist');
+  renderWish();
+  // Update every heart on the page without re-rendering grids
+  $$(`[data-wish="${id}"]`).forEach(b => { b.classList.toggle('on', !had); b.textContent = had ? '♡' : '♥'; b.setAttribute('aria-pressed', !had); });
+}
+function renderWish() {
+  $('#wishCount').textContent = wish.length;
+  $('#wishItems').innerHTML = wish.length ? wish.map(id => {
+    const p = byId(id);
+    return `<div class="row"><img src="${art(p)}" alt="" width="64" height="64">
+      <div><h4>${p.name}</h4><span class="muted">${money(p.price)}</span><br><button class="rm" data-add="${p.id}">Add to cart</button></div>
+      <button class="rm" data-wish="${p.id}">Remove</button></div>`;
+  }).join('') : '<p class="empty">Nothing saved yet. Tap the heart on any product to keep it here.</p>';
+}
+
+/* ---------- Product detail modal ---------- */
+let modalState = { id:0, color:'', qty:1 };
+function openModal(id) {
+  const p = byId(id); modalState = { id, color:p.colors[0], qty:1 };
+  const related = PRODUCTS.filter(x => x.cat === p.cat && x.id !== id).concat(PRODUCTS.filter(x => x.cat !== p.cat)).slice(0, 3);
+  $('#modalBody').innerHTML = `<div class="detail">
+    <div class="detail-img"><img id="mImg" src="${art(p)}" alt="${p.name}"></div>
+    <div class="detail-info">
+      <span class="cat-label">${p.cat}</span><h2 id="mTitle" style="margin:0">${p.name}</h2>
+      <div class="stars">${stars(p.rating)}<small>${p.rating} rating</small></div>
+      <div class="price"><b style="font-size:1.6rem">${money(p.price)}</b><s>${money(p.was)}</s><span class="pill" style="margin:0">Save ${off(p)}%</span></div>
+      <p class="lead">${p.desc}</p>
+      <div><b>Color: <span id="mColor">${modalState.color}</span></b>
+        <div class="swatches" role="group" aria-label="Color">${p.colors.map((c, i) => `<button class="sw ${i ? '' : 'on'}" data-color="${c}" style="background:${COLORS[c]}" aria-label="${c}"></button>`).join('')}</div></div>
+      <div class="detail-act"><div class="qty"><button data-mq="-1" aria-label="Decrease">−</button><span id="mQty">1</span><button data-mq="1" aria-label="Increase">+</button></div>
+        <button class="btn primary" id="mAdd" style="flex:1">Add to Cart</button>
+        <button class="icon-btn heart-d" data-wish="${p.id}" aria-label="Toggle wishlist" style="border:1px solid var(--line)">${wish.includes(p.id) ? '♥' : '♡'}</button></div>
+    </div></div>
+    <div class="related"><h3>You may also like</h3><div class="grid">${related.map(r => `<button class="mini" data-view="${r.id}"><img src="${art(r)}" alt="${r.name}" loading="lazy"><div><b>${r.name}</b><br>${money(r.price)}</div></button>`).join('')}</div></div>`;
+  $('#modal').hidden = false; document.body.style.overflow = 'hidden';
+  $('#modalClose').focus();
+}
+function closeModal() { $('#modal').hidden = true; document.body.style.overflow = ''; }
+
+/* ---------- Drawers ---------- */
+function openDrawer(id) {
+  closeDrawers();
+  const d = $(id); d.classList.add('open'); d.setAttribute('aria-hidden', 'false');
+  $('#overlay').classList.add('show');
+}
+function closeDrawers() {
+  $$('.drawer').forEach(d => { d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); });
+  $('#overlay').classList.remove('show');
+}
+
+/* ---------- Scroll reveal ---------- */
+let io;
+function observe() {
+  if (!('IntersectionObserver' in window)) { $$('.reveal').forEach(e => e.classList.add('in')); return; }
+  io = io || new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .1 });
+  $$('.reveal:not(.in)').forEach(e => io.observe(e));
+}
+
+/* ---------- Contact form validation ---------- */
+function validateForm(form) {
+  const v = n => form.elements[n].value.trim();
+  const rules = {
+    name: v('name').length >= 2 || 'Enter your full name.',
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email')) || 'Enter a valid email address, like name@example.com.',
+    subject: v('subject').length >= 3 || 'Enter a subject (at least 3 characters).',
+    message: v('message').length >= 10 || 'Write a message of at least 10 characters.'
+  };
+  let ok = true;
+  Object.entries(rules).forEach(([n, r]) => {
+    const f = form.elements[n], bad = r !== true;
+    f.classList.toggle('bad', bad); f.nextElementSibling.textContent = bad ? r : '';
+    f.setAttribute('aria-invalid', bad); if (bad) ok = false;
+  });
+  return ok;
+}
+
+/* ---------- Init & events ---------- */
+function setTheme(t) { document.documentElement.dataset.theme = t; store.set('nova_theme', t); }
+
+function init() {
+  // Theme: saved choice, else system preference
+  setTheme(store.get('nova_theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  $('#year').textContent = new Date().getFullYear();
+  $('#heroImg').src = art(PRODUCTS[0]);
+
+  $('#catGrid').innerHTML = CATS.slice(1).map(c => `<button class="cat reveal" data-cat="${c}"><b>${c}</b><span>${CAT_NOTE[c]}</span></button>`).join('');
+  $('#chips').innerHTML = CATS.map(c => `<button class="chip" data-cat="${c}">${c}</button>`).join('');
+  renderAll(); renderCart(); renderWish();
+
+  // One delegated click handler for all dynamic buttons
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button, a'); if (!t) return;
+    const d = t.dataset;
+    if (d.add) addToCart(+d.add);
+    else if (d.wish) toggleWish(+d.wish);
+    else if (d.view) openModal(+d.view);
+    else if (d.inc) changeQty(d.inc, 1);
+    else if (d.dec) changeQty(d.dec, -1);
+    else if (d.rm) removeItem(d.rm);
+    else if (d.cat) { state.cat = d.cat; renderShop(); $('#shop').scrollIntoView({ behavior:'smooth' }); }
+    else if (d.color) { modalState.color = d.color; $$('.sw').forEach(s => s.classList.toggle('on', s === t)); $('#mColor').textContent = d.color; $('#mImg').src = art(byId(modalState.id), d.color); }
+    else if (d.mq) { modalState.qty = Math.max(1, modalState.qty + +d.mq); $('#mQty').textContent = modalState.qty; }
+    else if (t.id === 'mAdd') { addToCart(modalState.id, modalState.color, modalState.qty); closeModal(); openDrawer('#cartDrawer'); }
+    else if (t.id === 'clearCart') { cart = []; saveCart(); toast('Cart cleared'); }
+    else if (t.id === 'checkout') toast('Demo store: checkout is not connected');
+    else if ('close' in d) closeDrawers();
+    // Close the mobile menu after choosing a link
+    if (t.closest('#menu')) { $('#menu').classList.remove('open'); $('#burger').setAttribute('aria-expanded', false); }
+  });
+
+  $('#cartBtn').onclick = () => openDrawer('#cartDrawer');
+  $('#wishBtn').onclick = () => openDrawer('#wishDrawer');
+  $('#overlay').onclick = closeDrawers;
+  $('#modalClose').onclick = closeModal;
+  $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDrawers(); closeSearch(); } });
+
+  $('#burger').onclick = () => { const o = $('#menu').classList.toggle('open'); $('#burger').setAttribute('aria-expanded', o); };
+  $('#themeToggle').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
+  // Search (shop field and navbar overlay stay in sync)
+  const doSearch = v => { state.q = v; $('#search').value = v; renderShop(); };
+  $('#search').oninput = e => doSearch(e.target.value);
+  const closeSearch = () => { $('#searchBar').hidden = true; };
+  $('#searchToggle').onclick = () => { $('#searchBar').hidden = false; $('#navSearch').focus(); };
+  $('#searchClose').onclick = closeSearch;
+  $('#navSearch').addEventListener('keydown', e => { if (e.key === 'Enter') { doSearch(e.target.value); closeSearch(); $('#shop').scrollIntoView({ behavior:'smooth' }); } });
+  $('#sort').onchange = e => { state.sort = e.target.value; renderShop(); };
+
+  $('#copyCode').onclick = () => { navigator.clipboard?.writeText('NOVA10').catch(() => {}); toast('Code NOVA10 copied'); };
+
+  // Contact form
+  const form = $('#contactForm'), status = $('#formStatus');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (validateForm(form)) { status.className = 'ok'; status.textContent = 'Thanks! Your message passed validation. (Demo only: nothing was sent.)'; form.reset(); toast('Message validated'); }
+    else { status.className = ''; status.textContent = 'Please fix the highlighted fields.'; }
+  });
+
+  // Scroll: back-to-top, nav shadow, active link
+  const sections = ['home','shop','categories','about','contact'].map(id => document.getElementById(id));
+  addEventListener('scroll', () => {
+    $('#toTop').classList.toggle('show', scrollY > 600);
+    const y = scrollY + 120, cur = sections.filter(s => s.offsetTop <= y).pop();
+    $$('.menu a').forEach(a => a.classList.toggle('active', cur && a.getAttribute('href') === '#' + cur.id));
+  }, { passive:true });
+  $('#toTop').onclick = () => scrollTo({ top:0, behavior:'smooth' });
+}
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>
